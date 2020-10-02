@@ -4,7 +4,7 @@ class Shell(object):
         self._universe    = universe
         self._interpreter = interpreter
         self._bootstrap_method = None
-  
+
     def set_bootstrap_method(self, method):
         self._bootstrap_method = method
 
@@ -28,7 +28,7 @@ class Shell(object):
                     return
 
                 # Generate a temporary class with a run method
-                stmt = ("Shell_Class_" + str(counter) + 
+                stmt = ("Shell_Class_" + str(counter) +
                         " = ( run: it = ( | tmp | tmp := (" + stmt +
                         " ). 'it = ' print. ^tmp println ) )")
                 counter += 1
