@@ -4,14 +4,15 @@
 """
 
 import unittest
-from som.vm        import SymbolTable
-from som.vmobjects import Symbol
+from som.vm.symbol_table  import SymbolTable
+from som.vmobjects.symbol import Symbol
+from som.vmobjects.object import Object
 
 class SymbolTableTestCase(unittest.TestCase):
 
     def setUp(self):
         self.table  = SymbolTable()
-        self.symbol = Symbol(nilObject = False, value = "foo")
+        self.symbol = Symbol(nilObject = Object(None), value = "foo")
 
     def test_insert(self):
         self.assertIsNone(self.table.lookup("foo"))
