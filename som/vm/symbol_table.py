@@ -32,6 +32,4 @@ class SymbolTable(object):
         string: string
             String to lookup
         '''
-        # Insert the given symbol into the hash map by associating the
-        # symbol associated string to the symbol itself
         self._map[symbol.get_string()] = symbol
