@@ -1,3 +1,5 @@
+import sys
+
 class Shell(object):
 
     def __init__(self, universe, interpreter):
@@ -63,9 +65,9 @@ class Shell(object):
 
                     # Save the result of the run method
                     it = current_frame.pop()
-            except Exception, e:
+            except:
                 import traceback
                 traceback.print_exc()
-                self._universe.error_println("Caught exception: " + str(e))
+                self._universe.error_println("Caught exception: " + sys.exc_info()[0])
                 self._universe.error_println(str(
                             self._interpreter.get_frame().get_previous_frame()))

@@ -1,10 +1,11 @@
 from som.compiler.symbol import Symbol
+import sys
 
 class Lexer(object):
-    
+
     _SEPARATOR = "----"
     _PRIMITIVE = "primitive"
-    
+
     def __init__(self, input_file):
         self._line_number = 0
         self._chars_read  = 0 # all characters read, excluding the current line
@@ -18,7 +19,7 @@ class Lexer(object):
         self._next_text   = ""
         self._buf         = ""
         self._bufp        = 0
-    
+
     def get_sym(self):
         if self._peek_done:
             self._peek_done = False
@@ -26,7 +27,7 @@ class Lexer(object):
             self._symc = self._next_symc
             self._text = self._next_text
             return self._sym
-    
+
         while True:
             if not self._has_more_input():
                 self._sym = Symbol.NONE
@@ -35,23 +36,23 @@ class Lexer(object):
                 return self._sym
             self._skip_white_space()
             self._skip_comment()
-          
-            if (not self._end_of_buffer()          and 
+
+            if (not self._end_of_buffer()          and
                 not self._current_char().isspace() and
                 not self._current_char() == '"'):
                 break
-        
+
         if self._current_char() == '\'':
             self._sym = Symbol.STString
             self._symc = '\0'
-            
+
             self._bufp += 1
             self._text = self._bufchar(self._bufp)
-            
+
             while self._current_char() != '\'':
                 self._bufp += 1
                 self._text += self._bufchar(self._bufp)
-      
+
             self._text = self._text[:-1]
             self._bufp += 1
         elif self._current_char() == '[':
@@ -92,7 +93,7 @@ class Lexer(object):
                 self._sym = Symbol.Minus
                 self._symc = '-'
                 self._text = "-"
-        
+
         elif self._is_operator(self._current_char()):
             if self._is_operator(self._bufchar(self._bufp + 1)):
                 self._sym  = Symbol.OperatorSequence
@@ -168,21 +169,21 @@ class Lexer(object):
         save_sym  = self._sym
         save_symc = self._symc
         save_text = self._text
-        
+
         if self._peek_done:
             raise ValueError("SOM lexer: cannot peek twice!")
-        
+
         self.get_sym()
         self._next_sym  = self._sym
         self._next_symc = self._symc
         self._next_text = self._text
-        
+
         self._sym  = save_sym
         self._symc = save_symc
         self._text = save_text
-        
+
         self._peek_done = True
-        
+
         return self._next_sym
 
     def get_text(self):
@@ -196,10 +197,10 @@ class Lexer(object):
 
     def get_current_line_number(self):
         return self._line_number
-  
+
     def get_current_column(self):
         return self._bufp + 1
-  
+
     # All characters read and processed, including current line
     def get_number_of_characters_read(self):
         return self._chars_read + self._bufp
@@ -213,8 +214,8 @@ class Lexer(object):
             self._line_number += 1
             self._bufp = 0
             return len(self._buf)
-        except IOError, ioe:
-            raise ValueError("Error reading from input: " + str(ioe))
+        except IOError:
+            raise ValueError("Error reading from input: " + sys.exc_info()[0])
 
     def _has_more_input(self):
         while self._end_of_buffer():

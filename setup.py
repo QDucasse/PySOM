@@ -56,6 +56,6 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=[],
+    install_requires=["nose","pytest"],
 
 )
