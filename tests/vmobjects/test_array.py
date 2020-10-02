@@ -8,8 +8,8 @@ from som.vmobjects.array  import Array
 from som.vmobjects.object import Object
 from som.vm.universe      import Universe
 
-
 class ArrayTestCase(unittest.TestCase):
+
     def setUp(self):
         # Universe definition
         self.universe = Universe()
@@ -35,6 +35,7 @@ class ArrayTestCase(unittest.TestCase):
         self.assertEqual(self.extended_array, extended_array)
 
     def test_copy_indexable_fields_to(self):
+        # Populate a destination array with erroneous data to ensure it is overwritten
         destination = Array(Object(None),5)
         for i in range(4):
             destination.set_indexable_field(i,"foo")
