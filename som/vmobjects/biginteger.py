@@ -8,8 +8,9 @@ from som.vmobjects.object import Object
 
 class BigInteger(Object):
     '''
-    Big integer representation to be used when using numbers bigger than 2147483647
-    or smaller than -2147483646. The real value is hidden in as embedded.
+    Big integer representation to be with numbers bigger than 2147483647 or
+    smaller than -2147483646. The real value is hidden as an embedded instance
+    variable.
 
     Parameters
     ----------

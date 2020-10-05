@@ -4,15 +4,17 @@
 """
 
 import unittest
-from som.vm.symbol_table  import SymbolTable
-from som.vmobjects.symbol import Symbol
+
+from som.vm.symbol_table import SymbolTable
 from som.vmobjects.object import Object
+from som.vmobjects.symbol import Symbol
+
 
 class SymbolTableTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.table  = SymbolTable()
-        self.symbol = Symbol(nilObject = Object(None), value = "foo")
+        self.table = SymbolTable()
+        self.symbol = Symbol(nilObject=Object(None), value="foo")
 
     def test_insert(self):
         self.assertIsNone(self.table.lookup("foo"))
@@ -22,6 +24,7 @@ class SymbolTableTestCase(unittest.TestCase):
     def test_lookup(self):
         self.table.insert(self.symbol)
         self.assertEqual(self.table.lookup("foo"), self.symbol)
+
 
 if __name__ == "__main__":
     unittest.main()

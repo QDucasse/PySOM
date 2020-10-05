@@ -32,18 +32,19 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of David Wolever.
 
-import re
 import inspect
-from functools import wraps
+import re
 from collections import namedtuple
-
-from nose.tools import nottest
+from functools import wraps
 from unittest import TestCase
 
 import new
+from nose.tools import nottest
+
 new_instancemethod = new.instancemethod
 
 _param = namedtuple("param", "args kwargs")
+
 
 class param(_param):
     """ Represents a single parameter to a test case.
@@ -67,7 +68,7 @@ class param(_param):
                 pass
         """
 
-    def __new__(cls, *args , **kwargs):
+    def __new__(cls, *args, **kwargs):
         return _param.__new__(cls, args, kwargs)
 
     @classmethod
@@ -97,11 +98,12 @@ class param(_param):
         if isinstance(args, param):
             return args
         if isinstance(args, basestring):
-            args = (args, )
+            args = (args,)
         return cls(*args)
 
     def __repr__(self):
-        return "param(*%r, **%r)" %self
+        return "param(*%r, **%r)" % self
+
 
 class parameterized(object):
     """ Parameterize a test case::
@@ -145,7 +147,7 @@ class parameterized(object):
             for nose_tuple in self.yield_nose_tuples(f):
                 yield nose_tuple
 
-        test_func.__name__ = "_helper_for_%s" %(test_func.__name__, )
+        test_func.__name__ = "_helper_for_%s" % (test_func.__name__,)
         parameterized_helper_method.parameterized_input = input
         parameterized_helper_method.parameterized_func = test_func
         return parameterized_helper_method
@@ -164,7 +166,7 @@ class parameterized(object):
         if p.kwargs:
             nose_func = wraps(func)(lambda args, kwargs: func(*args, **kwargs))
             nose_args = (p.args, p.kwargs)
-        return (nose_func, ) + nose_args
+        return (nose_func,) + nose_args
 
     def make_bound_method(self, instance, func):
         cls = type(instance)
@@ -206,7 +208,7 @@ class parameterized(object):
     @classmethod
     def check_input_values(cls, input_values):
         if not hasattr(input_values, "__iter__"):
-            raise ValueError("expected iterable input; got %r" %(input, ))
+            raise ValueError("expected iterable input; got %r" % (input,))
         return input_values
 
     @classmethod
@@ -235,12 +237,13 @@ class parameterized(object):
             get_input = cls.input_as_callable(input)
             for num, args in enumerate(get_input()):
                 p = param.from_decorator(args)
-                name_suffix = "_%s" %(num, )
+                name_suffix = "_%s" % (num,)
                 if len(p.args) > 0 and isinstance(p.args[0], basestring):
                     name_suffix += "_" + cls.to_safe_name(p.args[0])
                 name = base_name + name_suffix
                 frame_locals[name] = cls.param_as_standalone_func(p, f, name)
             return nottest(f)
+
         return parameterized_expand_wrapper
 
     @classmethod
