@@ -5,19 +5,27 @@
 
 import unittest
 
-from som.vmobjects.double import Double
+from som.vmobjects.double  import Double
 from som.vmobjects.integer import Integer
-from som.vmobjects.object import Object
+from som.vmobjects.object  import Object
+from som.vmobjects.clazz   import Class
+from som.vmobjects.symbol  import Symbol
+from som.vm.universe       import Universe
 
 
 class ObjectTestCase(unittest.TestCase):
 
     def setUp(self):
+        self.universe       = Universe
         self.object_integer = Object(None)
-        self.object_integer._class = Integer
+        self.integer_class  = Class(self.universe)
+        self.integer_class.set_name(Symbol(Object(None),"Integer"))
+        self.object_integer._class = self.integer_class
 
     def test_get_class(self):
-        self.assertEqual(Integer, self.object_integer.get_class())
+        integer_class = Class(self.universe)
+        integer_class.set_name(Symbol(Object(None),"Integer"))
+        self.assertEqual(integer_class, self.object_integer.get_class())
 
     def test_set_class(self):
         self.object_integer.set_class(Double)
